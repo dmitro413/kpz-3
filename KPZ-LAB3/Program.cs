@@ -7,11 +7,15 @@ namespace KPZ_2LAB
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            Console.WriteLine("--- Завдання 3, Лабороторна 4: Спостерігач ---");
+            Console.WriteLine("--- Лабороторна номер 4 ---");
+            Console.WriteLine("\n--- Завдання 3, Лабороторна 4: Спостерігач ---");
             ObserverTest();
 
-            Console.WriteLine("--- Завдання 1: Адаптер ---");
+            Console.WriteLine("--- Завдання 4, Лабороторна 4: Стратегія ---");
+            StrategyTest();
+
+            Console.WriteLine("--- Лабороторна номер 5 ---");
+            Console.WriteLine("\n--- Завдання 1: Адаптер ---");
             LoggerTest();
 
             Console.WriteLine("--- Завдання 2: Декоратор ---");
@@ -41,6 +45,18 @@ namespace KPZ_2LAB
             button.DispatchEvent("mouseover");
             button.DispatchEvent("click");
             Console.WriteLine();
+        }
+        public static void StrategyTest()
+        {
+            var webImage = new LightImageNode("https://mywebsite.com/photo.jpg");
+            Console.WriteLine(webImage.OuterHTML);
+            webImage.LoadImage();
+
+            Console.WriteLine();
+
+            var localImage = new LightImageNode("C:/images/avatar.png");
+            Console.WriteLine(localImage.OuterHTML);
+            localImage.LoadImage();
         }
         public static void LoggerTest()
         {
