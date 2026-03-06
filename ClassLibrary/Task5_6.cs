@@ -29,6 +29,8 @@ namespace LightHTML_Patterns
         public List<string> CssClasses { get; set; } = new List<string>();
         public List<LightNode> Children { get; set; } = new List<LightNode>();
 
+        private Dictionary<string, List<Action>> _eventListeners = new Dictionary<string, List<Action>>();
+
         public LightElementNode(string tagName, DisplayType display, ClosingType closing)
         {
             TagName = tagName;
@@ -37,7 +39,32 @@ namespace LightHTML_Patterns
         }
 
         public void Add(LightNode node) => Children.Add(node);
-
+        public void AddEventListener(string eventType, Action listener)
+        {
+            if (!_eventListeners.ContainsKey(eventType))
+            {
+                _eventListeners[eventType] = new List<Action>();
+            }
+            _eventListeners[eventType].Add(listener);
+        }
+        public void RemoveEventListener(string eventType, Action listener)
+        {
+            if (_eventListeners.ContainsKey(eventType))
+            {
+                _eventListeners[eventType].Remove(listener);
+            }
+        }
+        public void DispatchEvent(string eventType)
+        {
+            if (_eventListeners.ContainsKey(eventType))
+            {
+                Console.WriteLine($"[Подія] Викликано подію '{eventType}' на елементі <{TagName}>");
+                foreach (var listener in _eventListeners[eventType])
+                {
+                    listener.Invoke();
+                }
+            }
+        }
         public override string InnerHTML
         {
             get
@@ -57,7 +84,7 @@ namespace LightHTML_Patterns
                 if (CssClasses.Count > 0)
                     sb.Append($" class=\"{string.Join(" ", CssClasses)}\"");
 
-                if (Closing == ClosingType.Single)
+                if (Closing == ClosingType.Single) 
                 {
                     sb.Append(" />");
                 }
