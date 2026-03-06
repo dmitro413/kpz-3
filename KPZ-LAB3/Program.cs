@@ -8,6 +8,9 @@ namespace KPZ_2LAB
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+            Console.WriteLine("--- Завдання 3, Лабороторна 4: Спостерігач ---");
+            ObserverTest();
+
             Console.WriteLine("--- Завдання 1: Адаптер ---");
             LoggerTest();
 
@@ -27,6 +30,17 @@ namespace KPZ_2LAB
             BookFlyweightTest();
 
             Console.ReadLine();
+        }
+        public static void ObserverTest()
+        {
+            var button = new LightElementNode("button", DisplayType.Inline, ClosingType.Paired);
+
+            button.AddEventListener("click", () => Console.WriteLine(" - Виконано логіку для кліку!"));
+            button.AddEventListener("mouseover", () => Console.WriteLine(" - Курсор наведено на кнопку."));
+
+            button.DispatchEvent("mouseover");
+            button.DispatchEvent("click");
+            Console.WriteLine();
         }
         public static void LoggerTest()
         {

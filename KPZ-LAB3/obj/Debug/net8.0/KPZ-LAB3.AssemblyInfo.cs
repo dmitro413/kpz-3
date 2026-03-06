@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KPZ-LAB3")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+58799ba2434a937b854abf1d75064ebc7ae2beaa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1732033ce006e4e22dca78ae46b81ccfa74936ac")]
 [assembly: System.Reflection.AssemblyProductAttribute("KPZ-LAB3")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KPZ-LAB3")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
