@@ -1,4 +1,5 @@
 ﻿using ClassLibrary;
+using LightHTML_Command;
 using LightHTML_Patterns;
 namespace KPZ_2LAB
 {
@@ -11,6 +12,8 @@ namespace KPZ_2LAB
             Console.WriteLine("\n-- ІТЕРАТОР — обхід HTML-дерева ---\n");
             IteratorTest();
 
+            Console.WriteLine("\n-- КОМАНДА — Undo/Redo для DOM ---\n");
+            CommandTest();
 
             Console.WriteLine("--- Лабороторна номер 4 ---");
             Console.WriteLine("\n--- Завдання 3, Лабороторна 4: Спостерігач ---");
@@ -278,6 +281,39 @@ namespace KPZ_2LAB
                     : $"\"{((LightTextNode)node).InnerHTML}\"";
                 Console.WriteLine($"  [{step++}] {label}");
             }
+
+            Console.WriteLine();
+        }
+        public static void CommandTest()
+        {
+            var body = new LightElementNode("body", DisplayType.Block, ClosingType.Paired);
+            var div = new LightElementNode("div", DisplayType.Block, ClosingType.Paired);
+            var p = new LightElementNode("p", DisplayType.Block, ClosingType.Paired);
+            var text = new LightTextNode("Привіт, Світ!");
+
+            var manager = new DomCommandManager();
+
+            manager.Execute(new AddChildCommand(body, div));
+            manager.Execute(new AddChildCommand(div, p));
+            manager.Execute(new AddChildCommand(p, text));
+            manager.Execute(new AddClassCommand(div, "container"));
+            manager.Execute(new AddClassCommand(div, "main"));
+
+            Console.WriteLine("\nHTML після команд:");
+            Console.WriteLine(body.OuterHTML);
+
+            manager.PrintHistory();
+
+            Console.WriteLine("\n--- Undo ×2 ---");
+            manager.Undo();
+            manager.Undo();
+            Console.WriteLine("\nHTML після 2× Undo:");
+            Console.WriteLine(body.OuterHTML);
+
+            Console.WriteLine("\n--- Redo ×1 ---");
+            manager.Redo();
+            Console.WriteLine("\nHTML після Redo:");
+            Console.WriteLine(body.OuterHTML);
 
             Console.WriteLine();
         }
