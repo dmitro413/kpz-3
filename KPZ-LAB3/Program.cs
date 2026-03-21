@@ -3,6 +3,7 @@ using LightHTML_Command;
 using LightHTML_Patterns;
 using LightHTML_State;
 using LightHTML_TemplateMethod;
+using LightHTML_Visitor;
 namespace KPZ_2LAB
 {
     internal class Program
@@ -23,6 +24,8 @@ namespace KPZ_2LAB
             Console.WriteLine("\n-- ШАБЛОННИЙ МЕТОД — Lifecycle Hooks ---\n");
             TemplateTest();
 
+            Console.WriteLine("\n-- ВІДВІДУВАЧ — операції над деревом ---\n");
+            VisitorTest();
 
             Console.WriteLine("--- Лабороторна номер 4 ---");
             Console.WriteLine("\n--- Завдання 3, Лабороторна 4: Спостерігач ---");
@@ -364,6 +367,68 @@ namespace KPZ_2LAB
             _ = btn.OuterHTML;
             _ = btn.OuterHTML;
             Console.WriteLine(btn.OuterHTML);
+            Console.WriteLine();
+        }
+        public static void VisitorTest()
+        {
+            var html = new VisitableLightElement("html", DisplayType.Block, ClosingType.Paired);
+            var head = new VisitableLightElement("head", DisplayType.Block, ClosingType.Paired);
+            var body = new VisitableLightElement("body", DisplayType.Block, ClosingType.Paired);
+            var div = new VisitableLightElement("div", DisplayType.Block, ClosingType.Paired);
+            var p1 = new VisitableLightElement("p", DisplayType.Block, ClosingType.Paired);
+            var p2 = new VisitableLightElement("p", DisplayType.Block, ClosingType.Paired);
+            var span = new VisitableLightElement("span", DisplayType.Inline, ClosingType.Paired);
+            var br = new VisitableLightElement("br", DisplayType.Inline, ClosingType.Single);
+            var h1 = new VisitableLightElement("h1", DisplayType.Block, ClosingType.Paired);
+            var title = new VisitableLightElement("title", DisplayType.Block, ClosingType.Paired);
+
+            title.AddText(new VisitableLightText("Мій документ"));
+            head.AddChild(title);
+
+            h1.AddText(new VisitableLightText("Ласкаво просимо"));
+            h1.AddClass("hero-title");
+
+            p1.AddText(new VisitableLightText("Перший абзац тексту."));
+            p1.AddClass("lead");
+
+            span.AddText(new VisitableLightText("виділений"));
+            span.AddClass("highlight");
+            p2.AddText(new VisitableLightText("Це "));
+            p2.AddChild(span);
+            p2.AddText(new VisitableLightText(" текст."));
+
+            div.AddClass("container");
+            div.AddClass("main");
+            div.AddChild(h1);
+            div.AddChild(p1);
+            div.AddChild(br);
+            div.AddChild(p2);
+
+            body.AddChild(div);
+            html.AddChild(head);
+            html.AddChild(body);
+
+            Console.WriteLine("--- HtmlRenderVisitor ---");
+            var renderer = new HtmlRenderVisitor();
+            html.Accept(renderer);
+            Console.WriteLine(renderer.Result);
+
+            Console.WriteLine("--- StatisticsVisitor ---");
+            var stats = new StatisticsVisitor();
+            html.Accept(stats);
+            stats.PrintReport();
+            Console.WriteLine();
+
+            Console.WriteLine("--- TextExtractVisitor ---");
+            var textExtract = new TextExtractVisitor();
+            html.Accept(textExtract);
+            Console.WriteLine($"Весь текст: «{textExtract.Text}»");
+            Console.WriteLine();
+
+            Console.WriteLine("--- ClassAuditVisitor ---");
+            var classAudit = new ClassAuditVisitor();
+            html.Accept(classAudit);
+            classAudit.PrintReport();
             Console.WriteLine();
         }
     }
