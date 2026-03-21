@@ -2,6 +2,7 @@
 using LightHTML_Command;
 using LightHTML_Patterns;
 using LightHTML_State;
+using LightHTML_TemplateMethod;
 namespace KPZ_2LAB
 {
     internal class Program
@@ -18,6 +19,9 @@ namespace KPZ_2LAB
 
             Console.WriteLine("\n--- СТАН — Lifecycle стани елемента ---\n");
             StateTest();
+
+            Console.WriteLine("\n-- ШАБЛОННИЙ МЕТОД — Lifecycle Hooks ---\n");
+            TemplateTest();
 
 
             Console.WriteLine("--- Лабороторна номер 4 ---");
@@ -338,6 +342,28 @@ namespace KPZ_2LAB
             div.Insert();
             Console.WriteLine($"  Поточний стан: {div.CurrentState}\n");
             div.Render();
+            Console.WriteLine();
+        }
+        public static void TemplateTest()
+        {
+            Console.WriteLine("--- LoggingDivElement ---");
+            var div = new LoggingDivElement();
+            div.AddClass("card");
+            div.AddClass("shadow");
+            div.Add(new LightTextNode("Текст всередині div"));
+            var p = new LightElementNode("p", DisplayType.Block, ClosingType.Paired);
+            p.Add(new LightTextNode("Абзац"));
+            div.Add(p);
+
+            Console.WriteLine("\nРезультат рендерингу:");
+            Console.WriteLine(div.OuterHTML);
+
+            Console.WriteLine("\n--- TrackedButtonElement ---");
+            var btn = new TrackedButtonElement();
+            btn.Add(new LightTextNode("Натисни мене"));
+            _ = btn.OuterHTML;
+            _ = btn.OuterHTML;
+            Console.WriteLine(btn.OuterHTML);
             Console.WriteLine();
         }
     }
