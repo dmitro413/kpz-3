@@ -1,6 +1,7 @@
 ﻿using ClassLibrary;
 using LightHTML_Command;
 using LightHTML_Patterns;
+using LightHTML_State;
 namespace KPZ_2LAB
 {
     internal class Program
@@ -14,6 +15,10 @@ namespace KPZ_2LAB
 
             Console.WriteLine("\n-- КОМАНДА — Undo/Redo для DOM ---\n");
             CommandTest();
+
+            Console.WriteLine("\n--- СТАН — Lifecycle стани елемента ---\n");
+            StateTest();
+
 
             Console.WriteLine("--- Лабороторна номер 4 ---");
             Console.WriteLine("\n--- Завдання 3, Лабороторна 4: Спостерігач ---");
@@ -315,6 +320,24 @@ namespace KPZ_2LAB
             Console.WriteLine("\nHTML після Redo:");
             Console.WriteLine(body.OuterHTML);
 
+            Console.WriteLine();
+        }
+        public static void StateTest()
+        {
+            var div = new StatefulLightElement("div", DisplayType.Block, ClosingType.Paired);
+            Console.WriteLine($"  Поточний стан: {div.CurrentState}\n");
+            div.Render();
+            div.Add(new LightTextNode("Контент"));
+            div.Insert();
+            Console.WriteLine($"  Поточний стан: {div.CurrentState}\n");
+            div.Render();
+            div.Insert();
+            div.Remove();
+            Console.WriteLine($"  Поточний стан: {div.CurrentState}\n");
+            div.Render();
+            div.Insert();
+            Console.WriteLine($"  Поточний стан: {div.CurrentState}\n");
+            div.Render();
             Console.WriteLine();
         }
     }
