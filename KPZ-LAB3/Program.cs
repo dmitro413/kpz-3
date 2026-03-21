@@ -7,6 +7,11 @@ namespace KPZ_2LAB
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine("--- Модульна контрольна робота №1 ---");
+            Console.WriteLine("\n-- ІТЕРАТОР — обхід HTML-дерева ---\n");
+            IteratorTest();
+
+
             Console.WriteLine("--- Лабороторна номер 4 ---");
             Console.WriteLine("\n--- Завдання 3, Лабороторна 4: Спостерігач ---");
             ObserverTest();
@@ -229,6 +234,52 @@ namespace KPZ_2LAB
                 root.Add(node);
             }
             return root;
+        }
+        public static void IteratorTest()
+        {
+            var html = new LightElementNode("html", DisplayType.Block, ClosingType.Paired);
+            var body = new LightElementNode("body", DisplayType.Block, ClosingType.Paired);
+            var div = new LightElementNode("div", DisplayType.Block, ClosingType.Paired);
+            var p1 = new LightElementNode("p", DisplayType.Block, ClosingType.Paired);
+            var p2 = new LightElementNode("p", DisplayType.Block, ClosingType.Paired);
+            var span = new LightElementNode("span", DisplayType.Inline, ClosingType.Paired);
+
+            p1.Add(new LightTextNode("Перший абзац"));
+            span.Add(new LightTextNode("виділений текст"));
+            p2.Add(span);
+            p2.Add(new LightTextNode(" та звичайний текст"));
+            div.Add(p1);
+            div.Add(p2);
+            body.Add(div);
+            html.Add(body);
+
+            Console.WriteLine("--- Обхід у глибину (DFS) ---");
+            var dfs = html.GetDepthFirstIterator();
+            int step = 0;
+            while (dfs.HasNext())
+            {
+                var node = dfs.Next();
+                string label = node is LightElementNode el
+                    ? $"<{el.TagName}>"
+                    : $"\"{((LightTextNode)node).InnerHTML}\"";
+                Console.WriteLine($"  [{step++}] {label}");
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine("--- Обхід у ширину (BFS) ---");
+            var bfs = html.GetBreadthFirstIterator();
+            step = 0;
+            while (bfs.HasNext())
+            {
+                var node = bfs.Next();
+                string label = node is LightElementNode el2
+                    ? $"<{el2.TagName}>"
+                    : $"\"{((LightTextNode)node).InnerHTML}\"";
+                Console.WriteLine($"  [{step++}] {label}");
+            }
+
+            Console.WriteLine();
         }
     }
 }
